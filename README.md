@@ -1,4 +1,6 @@
-Nota: Es necesario el entorno pipenv.
+Nota: 
+* Es necesario el entorno pipenv.
+* Selectores: Se manejan 2 selectores por el momento, Procesar es para cargar pdf a Calendar y Procesar_Citas es para establecer eventos con solo fecha y hora.
 
 Estructura general:
 * Calendario: Es el archivo principal a ejecutar.
