@@ -98,13 +98,13 @@ def Procesar_PDF():
     df_plumber.loc[1, :] = df_plumber.loc[1, :].astype(str).str.lower()
 
     # Exportar a CSV
-    # df_plumber.to_csv("dataframe_completo.csv", index=False)
+    df_plumber.to_csv("Horario_en_excel.csv", index=False)
     
     return df_plumber
 
 def Carga_JSON():
     datos_cargados = {}
-    archivos = ["Datos_Evento", "Citas_Paula", "Citas_Wilder"]
+    archivos = ["Datos_Evento"]
 
     for archivo in archivos:
         archivo_json = f'./json/{archivo}.json'

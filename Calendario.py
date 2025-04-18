@@ -3,7 +3,7 @@ from Servicios_Google import Tarea_Calendario, Evento_Calendario
 from Procesado import Procesar, Procesar_Citas
 from ETL import Procesar_PDF, Problema_Fecha
 
-def Horario_paula(Selector):
+def Horario_p(Selector):
     opciones = {
         Procesar: ("tasks", "v1", Tarea_Calendario),
         Procesar_Citas: ("calendar", "v3", Evento_Calendario)
@@ -11,10 +11,10 @@ def Horario_paula(Selector):
     
     if Selector in opciones:
         tipo, version, Funcion = opciones[Selector]
-        Selector(usuario='Paula', tipo=tipo, credencial='./credenciales_json/credentials_p.json', version=version, Funcion=Funcion)
+        Selector(usuario='p', tipo=tipo, credencial='./credenciales_json/credentials_p.json', version=version, Funcion=Funcion)
 
-def Horario_wilder(Selector):
-    Selector(usuario='Wilder', tipo='calendar',
+def Horario_w(Selector):
+    Selector(usuario='w', tipo='calendar',
              credencial='./credenciales_json/credentials_w.json', version='v3', Funcion=Evento_Calendario)
 
 if __name__ == '__main__':
@@ -29,13 +29,13 @@ if __name__ == '__main__':
 
     if corroborar in {'y', 'yes'}:
         Selector = Procesar
-        Horario_wilder(Selector=Selector)
-        Horario_paula(Selector=Selector)
+        Horario_w(Selector=Selector)
+        Horario_p(Selector=Selector)
         print('\nTareas finalizadas correctamente......')
 
     elif corroborar == 'p':
         print("Zona de Prueba...")
-        # Horario_wilder(Selector=Procesar)
+        # Horario_w(Selector=Procesar)
         print(Procesar_PDF())
 
     else:

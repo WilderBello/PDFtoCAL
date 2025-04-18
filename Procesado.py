@@ -30,7 +30,7 @@ def Procesar_Citas(usuario, tipo, credencial, version, Funcion, Mes='03', Anno='
             if usuario not in data["summary"]:
                 data["summary"] = f'{data["summary"]} {usuario}'
             
-            if usuario == 'Wilder':
+            if usuario == 'cita45':
                 data["color"] = "2"
                 hora_mod = data["hora_end"].split(':')
                 minutos = str(int(hora_mod[1]) + 15)
