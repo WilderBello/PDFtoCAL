@@ -1,7 +1,7 @@
 from __future__ import print_function
 from Servicios_Google import Tarea_Calendario, Evento_Calendario
 from Procesado import Procesar, Procesar_Citas
-from ETL import Procesar_PDF
+from ETL import Procesar_PDF, Problema_Fecha
 
 def Horario_paula(Selector):
     opciones = {
@@ -19,10 +19,11 @@ def Horario_wilder(Selector):
 
 if __name__ == '__main__':
     
-    fecha = Procesar_PDF(pdf_path="GGZ Intranet.pdf")
+    df, fecha = Problema_Fecha(pdf_path="GGZ Intranet.pdf")
+    print(fecha)
 
     print('Datos a procesar: ')
-    print(fecha)
+    print(Procesar_PDF())
 
     corroborar = input('La fecha a procesar es la anterior y los datos a procesar son los mostrados. \nEs correcto? (Y/N): ').strip().lower()
 
@@ -35,7 +36,7 @@ if __name__ == '__main__':
     elif corroborar == 'p':
         print("Zona de Prueba...")
         # Horario_wilder(Selector=Procesar)
-        # print(Procesar_PDF(pdf_path="GGZ Intranet.pdf"))
+        print(Procesar_PDF())
 
     else:
         print('Por favor corrobore la fecha a ingresar.')

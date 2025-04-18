@@ -58,7 +58,7 @@ def Procesar(usuario, tipo, credencial, version, Funcion):
     dias_modificados = []
 
     # Información extraída del PDF
-    datos_pdf = Procesar_PDF(pdf_path="GGZ Intranet.pdf")
+    datos_pdf = Procesar_PDF()
     
     for (col1, fecha), (col2, hora) in zip(datos_pdf.iloc[0].items(), datos_pdf.iloc[1].items()):
         data = datos_cargados["Datos_Evento"].get(hora)

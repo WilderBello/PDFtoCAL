@@ -3,6 +3,29 @@ import json
 import pdfplumber
 import pandas as pd
 
+# Traduccion de aleman a ingles para la fecha en pandas.
+def traducir_mes_aleman(mes_str):
+    traducciones = {
+        "Januar": "January",
+        "Februar": "February",
+        "März": "March",
+        "April": "April",
+        "Mai": "May",
+        "Juni": "June",
+        "Juli": "July",
+        "August": "August",
+        "September": "September",
+        "Oktober": "October",
+        "November": "November",
+        "Dezember": "December"
+    }
+
+    for aleman, ingles in traducciones.items():
+        if aleman in mes_str:
+            return mes_str.replace(aleman, ingles)
+    
+    return mes_str
+
 # Función para verificar y modificar el formato de las celdas
 def modificar_celda(valor):
     if isinstance(valor, str) and '\n' in valor:
@@ -13,31 +36,46 @@ def modificar_celda(valor):
             return lineas[1] if 'f' in lineas else f'{lineas[0]}-{lineas[1]}'
     return valor  # Retorna el valor original si no cumple las condiciones
 
-def Procesar_PDF(pdf_path):
+def Problema_Fecha(pdf_path):
     with pdfplumber.open(pdf_path) as pdf:
         table = pdf.pages[0].extract_table()
     
-    # PDF de Noviembre 2024
-    # df_plumber = pd.DataFrame(table[1:], columns=table[0]).drop(columns=[table[0][0]])  # Elimina primera columna
-    # Fecha en string
-    # fecha_str = df_plumber.iloc[0, 0].replace("\n", " ")
+    try:
+        # print("Formato Noviembre de 2024")
+        # PDF de Noviembre 2024
+        df_plumber = pd.DataFrame(table[1:], columns=table[0]).drop(columns=[table[0][0]])  # Elimina primera columna
+        # Fecha en string
+        fecha_str = df_plumber.iloc[0, 0].replace("\n", " ")
+        # Limpiar el DataFrame eliminando la primera fila y columna innecesaria
+        df_plumber = df_plumber.iloc[1:, 1:].reset_index(drop=True)
 
-    # PDF de Abril 2025
-    df_plumber = pd.DataFrame(table[1:], columns=table[0])
-    # Eliminando las ultimas 4 columnas
-    df_plumber = df_plumber.iloc[:,:-4]
-    # Fecha en string
-    fecha_str = df_plumber.columns[0].replace("\n", " ")
+    except Exception as e:
+        # print("Error con formato de Noviembre, usando formato alternativo:", e)
+        # PDF de Abril 2025
+        df_plumber = pd.DataFrame(table[1:], columns=table[0])
+        # Eliminando las ultimas 4 columnas
+        df_plumber = df_plumber.iloc[:,:-4]
+        # Fecha en string
+        fecha_str = df_plumber.columns[0].replace("\n", " ")
+        # Eliminando dos primeras filas
+        df_plumber = df_plumber.iloc[:, 2:].reset_index(drop=True)
+
+    # Traducir mes si está en alemán
+    fecha_str = traducir_mes_aleman(fecha_str)
+
+    # Pasar el dataframe a excel en formato csv.
+    # df_plumber.to_csv("dataframe_completo.csv", index=False)
+    
+    return df_plumber, fecha_str
+
+def Procesar_PDF():
+    df_plumber, fecha_str = Problema_Fecha(pdf_path="GGZ Intranet.pdf")
+
+    # print(fecha_str)
 
     # Obtener el mes y año de la primera celda
     fecha = pd.to_datetime(fecha_str, format="%B %Y")
     print(f"Fecha base: {fecha}")
-    
-    # Limpiar el DataFrame eliminando la primera fila y columna innecesaria ------------ Noviembre 2024
-    # df_plumber = df_plumber.iloc[1:, 1:].reset_index(drop=True)
-
-    # Eliminando dos primeras filas ---- Abril 2025
-    df_plumber = df_plumber.iloc[:, 2:].reset_index(drop=True)
 
     # Establecer nombres de columnas y eliminar columnas vacías
     df_plumber.columns = df_plumber.iloc[0]
