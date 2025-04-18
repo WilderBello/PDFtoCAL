@@ -18,7 +18,8 @@
 
 ## La estructura contiene las siguientes carpetas adicionales:
 * credenciales_json: Aloja las credenciales de los usuarios, asi como los token que se obtienen.
-* json: Se almacenan todos los datos en formato json con la estructura:```
+* json: Se almacenan todos los datos en formato json con la estructura:
+```json
   {
     "evento": {
         "summary": "Nombre evento",
