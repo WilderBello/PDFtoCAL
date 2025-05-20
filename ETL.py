@@ -84,6 +84,9 @@ def Procesar_PDF():
     # Convertir la primera fila en fechas sin hora
     df_plumber.loc[0, :] = pd.to_datetime([f"{fecha.year}-{fecha.month:02d}-{dia}" for dia in df_plumber.columns]).date
 
+    # Eliminar segunda fila
+    df_plumber = df_plumber.drop(index=1).reset_index(drop=True)
+
     # Mantener solo las dos primeras filas
     df_plumber = df_plumber.head(2).reset_index(drop=True)
 
